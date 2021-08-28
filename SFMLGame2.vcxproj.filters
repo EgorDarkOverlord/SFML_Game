@@ -179,5 +179,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Config\Graphics.ini" />
+    <None Include=".gitignore" />
   </ItemGroup>
 </Project>

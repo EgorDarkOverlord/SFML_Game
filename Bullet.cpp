@@ -11,9 +11,9 @@ Bullet::Bullet(Bot* owner, sf::Texture* texture) : crashed(0), distance(0)
 	rect.setTexture(texture);
 
 	movementComponent = new MovementComponent(&rect, 500);
-	movementComponent->setDirection(owner->getBattleComponent()->getDirection());
-	maxDistance = owner->getBattleComponent()->getDistance();
-	damage = owner->getBattleComponent()->getDamage();
+	movementComponent->setDirection(owner->getBattleDirection());
+	maxDistance = owner->getBattleDistance();
+	damage = owner->getDamage();
 }
 
 bool Bullet::isAlive()
@@ -33,7 +33,7 @@ void Bullet::crash()
 
 void Bullet::crashTo(Bot* target)
 {
-	target->getAttributeComponent()->loseHealth(damage);
+	target->loseHealth(damage);
 	crashed = true;
 }
 

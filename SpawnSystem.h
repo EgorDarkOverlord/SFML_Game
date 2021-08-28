@@ -77,8 +77,8 @@ template<>
 inline void SpawnSystem<Bot>::addSpawnObject()
 {
 	Bot* bot = new Zombie(0, 0, &textures->at("Zombie"), player);
-	bot->getAttributeComponent()->setHealthMax(bot->getAttributeComponent()->getHealthMax() * (1 + player->getAttributeComponent()->getLevel() / 10.f));
-	bot->getBattleComponent()->setDamage(bot->getBattleComponent()->getDamage() * (1 + player->getAttributeComponent()->getLevel() / 10.f));
+	bot->setHealthMax(bot->getHealthMax() * (1 + player->getLevel() / 10.f));
+	bot->setDamage(bot->getDamage() * (1 + player->getLevel() / 10.f));
 
 	bot->setPosition(rand() % int(worldRect.width - bot->getRect().width), rand() % int(worldRect.height - bot->getRect().height));
 	while (!entityFree(bot))

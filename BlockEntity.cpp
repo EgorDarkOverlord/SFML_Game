@@ -14,8 +14,8 @@ void BlockEntity::updateCollision(Entity* entity, float etime)
 {
     sf::FloatRect prevPosX, prevPosY, bound;
     prevPosX = prevPosY = bound = entity->getRect();
-    float dx = entity->getMovementComponent()->getSpeed() * entity->getMovementComponent()->getDirection().x * etime;
-    float dy = entity->getMovementComponent()->getSpeed() * entity->getMovementComponent()->getDirection().y * etime;
+    float dx = entity->getMovementSpeed() * entity->getMovementDirection().x * etime;
+    float dy = entity->getMovementSpeed() * entity->getMovementDirection().y * etime;
     prevPosY.left -= dx;
     prevPosX.top -= dy;
 

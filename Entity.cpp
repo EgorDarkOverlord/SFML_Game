@@ -18,7 +18,9 @@ HitboxComponent* Entity::getHitboxComponent()
 sf::Vector2f Entity::getPosition()
 {
 	if (hitboxComponent)
+	{
 		return hitboxComponent->getPosition();
+	}
 	return rect.getPosition();
 }
 
@@ -30,16 +32,72 @@ sf::Vector2f Entity::getRectPosition()
 sf::FloatRect Entity::getRect()
 {
 	if (hitboxComponent)
+	{
 		return hitboxComponent->getGlobalBounds();
+	}
 	return rect.getGlobalBounds();
+}
+
+sf::Vector2f Entity::getMovementDirection()
+{
+	if (movementComponent)
+	{
+		return movementComponent->getDirection();
+	}
+	return sf::Vector2f(0, 0);
+}
+
+float Entity::getMovementSpeed()
+{
+	if (movementComponent)
+	{
+		return movementComponent->getSpeed();
+	}
+	return 0;
 }
 
 void Entity::setPosition(float x, float y)
 {
 	if (hitboxComponent)
+	{
 		hitboxComponent->setPosition(x, y);
+	}
 	else
+	{
 		rect.setPosition(x, y);
+	}
+}
+
+void Entity::setMovementDirection(sf::Vector2f direction)
+{
+	if (movementComponent)
+	{
+		movementComponent->setDirection(direction);
+	}
+}
+
+void Entity::setMovementSpeed(float speed)
+{
+	if (movementComponent)
+	{
+		movementComponent->setSpeed(speed);
+	}
+}
+
+void Entity::rotateRect(float rotation)
+{
+	if (movementComponent)
+	{
+		movementComponent->rotateRect(rotation);
+	}
+}
+
+void Entity::rotateRectByVector(sf::Vector2f vector)
+{
+	if (movementComponent)
+	{
+		movementComponent->rotateRectByVector(vector);
+	}
 }
 
 Entity::~Entity()

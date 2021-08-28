@@ -21,20 +21,20 @@ void BonusEntity::Invoke(Bot* bot)
 
 void BonusEntity::Heal(Bot* bot)
 {
-    bot->getAttributeComponent()->gainHealth(100);
+    bot->gainHealth(100);
 }
 
 void BonusEntity::MaxHealthUp(Bot* bot)
 {
-    bot->getAttributeComponent()->setHealthMax(bot->getAttributeComponent()->getHealthMax() * 1.1);
+    bot->setHealthMax(bot->getHealthMax() * 1.1);
 }
 
 void BonusEntity::IncreaseDamage(Bot* bot)
 {
-    bot->getBattleComponent()->setDamage(bot->getBattleComponent()->getDamage() * 1.1);
+    bot->setDamage(bot->getDamage() * 1.1);
 }
 
 void BonusEntity::IncreaseScore(Bot* bot)
 {
-    bot->getAttributeComponent()->gainScore(1000);
+    bot->gainScore(1000);
 }

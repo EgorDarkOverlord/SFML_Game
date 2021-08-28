@@ -84,8 +84,8 @@ void World::unLoadWorld()
 
 void World::getGameScore(int& health, int& score)
 {
-	health = player->getAttributeComponent()->getHealth();
-	score = player->getAttributeComponent()->getScore();
+	health = player->getHealth();
+	score = player->getScore();
 }
 
 void World::updatePlayerInput(sf::Vector2f mousePosView)
@@ -95,10 +95,10 @@ void World::updatePlayerInput(sf::Vector2f mousePosView)
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) dir.x += 1;
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)) dir.y -= 1;
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::S)) dir.y += 1;
-	player->getMovementComponent()->setDirection(dir);
+	player->setMovementDirection(dir);
 
-	player->getMovementComponent()->rotateRectByVector(mousePosView - player->getRectPosition());
-	player->getBattleComponent()->setDirection(mousePosView - player->getRectPosition());
+	player->rotateRectByVector(mousePosView - player->getRectPosition());
+	player->setBattleDirection(mousePosView - player->getRectPosition());
 }
 
 void World::playSound(sf::SoundBuffer* buffer, sf::Vector2f listenerPos, sf::Vector2f sourcePos, float minDistance, float attenuation)
@@ -125,18 +125,18 @@ void World::playSound(sf::SoundBuffer* buffer, sf::Vector2f listenerPos, sf::Vec
 
 void World::updateCombat()
 {
-	if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && player->getBattleComponent()->isReady())
+	if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && player->isReadyToAttack())
 	{
-		player->getBattleComponent()->resetAttack();
+		player->resetAttack();
 		bullets.push_back(new Bullet(player, &textures["Bullet"]));
 		playSound(&buffers["PlayerAttack"], player->getRectPosition(), player->getBattlePoint(), 1000, 1);
 	}
 	for (auto* i : enemies)
-		if ((vectorDistance(player->getRectPosition(), i->getRectPosition()) <= i->getBattleComponent()->getDistance()) &&
-			i->getBattleComponent()->isReady())
+		if ((vectorDistance(player->getRectPosition(), i->getRectPosition()) <= i->getBattleDistance()) &&
+			i->isReadyToAttack())
 		{
-			i->getBattleComponent()->resetAttack();
-			i->getBattleComponent()->setDirection(player->getRectPosition() - i->getRectPosition());
+			i->resetAttack();
+			i->setBattleDirection(player->getRectPosition() - i->getRectPosition());
 			bullets.push_back(new Bullet(i, &textures["BulletTransparent"]));
 		}
 }
@@ -210,7 +210,7 @@ void World::update(float etime, sf::Vector2f mousePosView)
 		{
 			delete enemies[i];
 			enemies.erase(enemies.begin() + i);
-			player->getAttributeComponent()->gainScore(100);
+			player->gainScore(100);
 			playSound(&buffers["MonsterDead"], player->getRectPosition(), player->getRectPosition(), 1000, 1);
 		}
 	
