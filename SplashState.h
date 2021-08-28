@@ -6,6 +6,7 @@ class SplashState : public State
 {
 private:
 	sf::Clock timer;
+	sf::RectangleShape rect;
 	float duration;
 	Panel panel;
 public:
