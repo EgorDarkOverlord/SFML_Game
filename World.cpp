@@ -189,7 +189,10 @@ void World::update(float etime, sf::Vector2f mousePosView)
 	for (auto* i : enemies)
 		i->update(etime);
 
-	updateBotCollision(etime);
+	//updateBotCollision(etime);
+
+	for (auto* i : blockEntities)
+		i->update(etime);
 
 	updateCombat();
 

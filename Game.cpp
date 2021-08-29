@@ -11,6 +11,9 @@ Game::Game()
 	stateData.gfxSettings = gfxSettings;
 	State::setStateData(&stateData);
 
+	worldFacade = WorldFacade(&world);
+	Entity::setWorldFacade(&worldFacade);
+
 	Panel::loadTextures();
 	Label::loadFont("C:/Windows/Fonts/Arial.ttf");
 	Button::setButtonPrototypes();

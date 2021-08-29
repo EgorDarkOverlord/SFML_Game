@@ -5,6 +5,14 @@ Entity::Entity()
 {
 }
 
+WorldFacade* Entity::worldFacade;
+
+void Entity::setWorldFacade(WorldFacade* facade)
+{
+	if(!worldFacade)
+		worldFacade = facade;
+}
+
 MovementComponent* Entity::getMovementComponent()
 {
 	return movementComponent;

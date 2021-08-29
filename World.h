@@ -8,6 +8,7 @@
 
 class World
 {
+	friend class WorldFacade;
 private:
 	Player* player;
 	std::vector<BlockEntity*> blockEntities;

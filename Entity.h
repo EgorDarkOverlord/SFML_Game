@@ -2,14 +2,19 @@
 #include "MovementComponent.h"
 #include "HitboxComponent.h"
 
+class WorldFacade;
+
 class Entity
 {
 protected:
+	static WorldFacade* worldFacade;
+
 	sf::RectangleShape rect;
 	MovementComponent* movementComponent = NULL;
 	HitboxComponent* hitboxComponent = NULL;
 public:
 	Entity();
+	static void setWorldFacade(WorldFacade* facade);
 
 	MovementComponent* getMovementComponent();
 	HitboxComponent* getHitboxComponent();

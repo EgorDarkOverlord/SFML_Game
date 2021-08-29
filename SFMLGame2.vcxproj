@@ -183,6 +183,7 @@
     </ClCompile>
     <ClCompile Include="VectorMath.cpp" />
     <ClCompile Include="World.cpp" />
+    <ClCompile Include="WorldFacade.cpp" />
     <ClCompile Include="Zombie.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -211,6 +212,7 @@
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="VectorMath.h" />
     <ClInclude Include="World.h" />
+    <ClInclude Include="WorldFacade.h" />
     <ClInclude Include="Zombie.h" />
   </ItemGroup>
   <ItemGroup>

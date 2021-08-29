@@ -3,6 +3,7 @@
 #include "MainMenuState.h"
 #include "SettingsState.h"
 #include "SplashState.h"
+#include "WorldFacade.h"
 
 class Game
 {
@@ -15,6 +16,7 @@ private:
 	sf::Clock sfClock;
 	StateData stateData;
 	World world;
+	WorldFacade worldFacade;
 
 	void initGraphicsSettings();
 	void initWindow();

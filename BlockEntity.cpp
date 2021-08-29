@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "BlockEntity.h"
+#include "WorldFacade.h"
 
 BlockEntity::BlockEntity(float x, float y, float w, float h)
 {
@@ -33,5 +34,7 @@ void BlockEntity::updateCollision(Entity* entity, float etime)
 
 void BlockEntity::update(float etime)
 {
-
+    updateCollision(worldFacade->getPlayer(), etime);
+    for (auto* i : worldFacade->getEnemies())
+        updateCollision(i, etime);
 }
