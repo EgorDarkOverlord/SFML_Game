@@ -1,13 +1,16 @@
 #pragma once
 #include "Entity.h"
 
+class Bot;
+
 class AIComponent
 {
 protected:
-	Entity* self;
-	Entity* target;
+	Bot* self;
+	WorldFacade* worldFacade;
+	float minRadius, maxRadius;
 public:
-	AIComponent(Entity* self, Entity* target);
+	AIComponent(Bot* self, WorldFacade* worldFacade);
 	virtual void update() = 0;
 };
 

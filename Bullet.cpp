@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "Bullet.h"
+#include "WorldFacade.h"
 
 Bullet::Bullet(Bot* owner, sf::Texture* texture) : crashed(0), distance(0)
 {
@@ -37,8 +38,29 @@ void Bullet::crashTo(Bot* target)
 	crashed = true;
 }
 
+void Bullet::updateCrush()
+{
+	if (isAlive() && getRect().intersects(worldFacade->getPlayer()->getRect()) && (ownerType == typeid(Zombie).name()))
+	{
+		crashTo(worldFacade->getPlayer());
+		worldFacade->playSound(&worldFacade->getBuffers()["Kick"], worldFacade->getPlayer()->getRectPosition(), 
+			worldFacade->getPlayer()->getRectPosition(), 500, 1);
+	}
+	for (auto* j : worldFacade->getEnemies())
+		if (isAlive() && getRect().intersects(j->getRect()) && (ownerType == typeid(Player).name()))
+		{
+			crashTo(j);
+			worldFacade->playSound(&worldFacade->getBuffers()["BulletDamage"], worldFacade->getPlayer()->getRectPosition(),
+				worldFacade->getPlayer()->getRectPosition(), 500, 1);
+		}
+	for (auto* j : worldFacade->getBlockEntities())
+		if (getRect().intersects(j->getRect()))
+			crash();
+}
+
 void Bullet::update(float etime)
 {
 	movementComponent->update(etime);
 	distance += movementComponent->getSpeed() * etime;
+	updateCrush();
 }

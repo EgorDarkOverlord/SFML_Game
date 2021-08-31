@@ -1,6 +1,6 @@
 #pragma once
 #include "Bot.h"
-#include "AIFollow.h"
+#include "ZombieAI.h"
 
 class Zombie : public Bot
 {

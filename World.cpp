@@ -131,12 +131,11 @@ void World::updateCombat()
 		bullets.push_back(new Bullet(player, &textures["Bullet"]));
 		playSound(&buffers["PlayerAttack"], player->getRectPosition(), player->getBattlePoint(), 1000, 1);
 	}
+
 	for (auto* i : enemies)
-		if ((vectorDistance(player->getRectPosition(), i->getRectPosition()) <= i->getBattleDistance()) &&
-			i->isReadyToAttack())
+		if (i->attacked())
 		{
 			i->resetAttack();
-			i->setBattleDirection(player->getRectPosition() - i->getRectPosition());
 			bullets.push_back(new Bullet(i, &textures["BulletTransparent"]));
 		}
 }
@@ -199,7 +198,7 @@ void World::update(float etime, sf::Vector2f mousePosView)
 	for (auto* i : bullets)
 		i->update(etime);
 
-	updateBulletsCrashes();
+	//updateBulletsCrashes();
 
 	for (auto* i : bonusEntities)
 		if (i->getRect().intersects(player->getRect()))

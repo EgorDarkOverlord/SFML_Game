@@ -51,9 +51,6 @@
     <ClCompile Include="AIComponent.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="AIFollow.cpp">
-      <Filter>Исходные файлы</Filter>
-    </ClCompile>
     <ClCompile Include="Zombie.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
@@ -99,6 +96,9 @@
     <ClCompile Include="WorldFacade.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
+    <ClCompile Include="ZombieAI.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -132,9 +132,6 @@
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
     <ClInclude Include="AIComponent.h">
-      <Filter>Файлы заголовков</Filter>
-    </ClInclude>
-    <ClInclude Include="AIFollow.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
     <ClInclude Include="Zombie.h">
@@ -180,6 +177,9 @@
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
     <ClInclude Include="WorldFacade.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="ZombieAI.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
   </ItemGroup>

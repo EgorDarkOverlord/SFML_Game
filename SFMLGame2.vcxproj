@@ -155,7 +155,6 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="AIComponent.cpp" />
-    <ClCompile Include="AIFollow.cpp" />
     <ClCompile Include="AttributeComponent.cpp" />
     <ClCompile Include="BattleComponent.cpp" />
     <ClCompile Include="BlockEntity.cpp" />
@@ -185,10 +184,10 @@
     <ClCompile Include="World.cpp" />
     <ClCompile Include="WorldFacade.cpp" />
     <ClCompile Include="Zombie.cpp" />
+    <ClCompile Include="ZombieAI.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AIComponent.h" />
-    <ClInclude Include="AIFollow.h" />
     <ClInclude Include="AttributeComponent.h" />
     <ClInclude Include="BattleComponent.h" />
     <ClInclude Include="BlockEntity.h" />
@@ -214,6 +213,7 @@
     <ClInclude Include="World.h" />
     <ClInclude Include="WorldFacade.h" />
     <ClInclude Include="Zombie.h" />
+    <ClInclude Include="ZombieAI.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include=".gitignore" />

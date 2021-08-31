@@ -14,6 +14,7 @@ public:
 	bool isAlive();
 	void crash();
 	void crashTo(Bot* target);
+	void updateCrush();
 	virtual void update(float etime) override;
 };
 
