@@ -40,21 +40,50 @@ void Bullet::crashTo(Bot* target)
 
 void Bullet::updateCrush()
 {
-	if (isAlive() && getRect().intersects(worldFacade->getPlayer()->getRect()) && (ownerType == typeid(Zombie).name()))
+	if (isAlive() && getRect().intersects(worldFacade->getPlayer()->getRect()))
 	{
-		crashTo(worldFacade->getPlayer());
-		worldFacade->playSound(&worldFacade->getBuffers()["Kick"], worldFacade->getPlayer()->getRectPosition(), 
-			worldFacade->getPlayer()->getRectPosition(), 500, 1);
-	}
-	for (auto* j : worldFacade->getEnemies())
-		if (isAlive() && getRect().intersects(j->getRect()) && (ownerType == typeid(Player).name()))
+		if (ownerType == typeid(Zombie).name())
 		{
-			crashTo(j);
+			crashTo(worldFacade->getPlayer());
+			worldFacade->playSound(&worldFacade->getBuffers()["Kick"], worldFacade->getPlayer()->getRectPosition(),
+				worldFacade->getPlayer()->getRectPosition(), 500, 1);
+		}
+		if (ownerType == typeid(Terrorist).name())
+		{
+			crashTo(worldFacade->getPlayer());
 			worldFacade->playSound(&worldFacade->getBuffers()["BulletDamage"], worldFacade->getPlayer()->getRectPosition(),
 				worldFacade->getPlayer()->getRectPosition(), 500, 1);
 		}
-	for (auto* j : worldFacade->getBlockEntities())
-		if (getRect().intersects(j->getRect()))
+	}
+	
+	for (auto* i : worldFacade->getBots())
+		if (isAlive() && getRect().intersects(i->getRect()))
+		{
+			if ((ownerType == typeid(Player).name()) || ownerType == typeid(Soldier).name())
+				if (typeid(*i) != typeid(Soldier))
+				{
+					crashTo(i);
+					worldFacade->playSound(&worldFacade->getBuffers()["BulletDamage"], worldFacade->getPlayer()->getRectPosition(),
+						i->getRectPosition(), 500, 1);
+				}
+			if (ownerType == typeid(Zombie).name())
+				if (typeid(*i) == typeid(Soldier))
+				{
+					crashTo(i);
+					worldFacade->playSound(&worldFacade->getBuffers()["Kick"], worldFacade->getPlayer()->getRectPosition(),
+						i->getRectPosition(), 500, 1);
+				}
+			if (ownerType == typeid(Terrorist).name())
+				if (typeid(*i) == typeid(Soldier))
+				{
+					crashTo(i);
+					worldFacade->playSound(&worldFacade->getBuffers()["BulletDamage"], worldFacade->getPlayer()->getRectPosition(),
+						i->getRectPosition(), 500, 1);
+				}
+		}
+	
+	for (auto* i : worldFacade->getBlockEntities())
+		if (getRect().intersects(i->getRect()))
 			crash();
 }
 

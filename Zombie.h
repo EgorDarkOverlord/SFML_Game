@@ -5,6 +5,6 @@
 class Zombie : public Bot
 {
 public:
-	Zombie(float x, float y, sf::Texture* texture, Entity* player);
+	Zombie(float x, float y, sf::Texture* texture);
 };
 

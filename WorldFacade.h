@@ -12,7 +12,7 @@ public:
 	Player* getPlayer() { return world->player; }
 	std::vector<BlockEntity*>& getBlockEntities() { return world->blockEntities; }
 	std::vector<BonusEntity*>& getBonusEntities() { return world->bonusEntities; }
-	std::vector<Bot*>& getEnemies() { return world->enemies; }
+	std::vector<Bot*>& getBots() { return world->bots; }
 	std::vector<Bullet*>& getBullets() { return world->bullets; }
 
 	std::map<std::string, sf::Texture>& getTextures() { return world->textures; }

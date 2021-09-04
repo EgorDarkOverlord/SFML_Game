@@ -13,12 +13,15 @@ void World::loadWorld()
 
 	textures["Player"].loadFromFile("Images/Player.png");
 	textures["Zombie"].loadFromFile("Images/Zombie.png");
+	textures["Soldier"].loadFromFile("Images/Soldier.png");
+	textures["Terrorist"].loadFromFile("Images/Terrorist.png");
 	textures["Bullet"].loadFromFile("Images/Bullet.png");
 	textures["BulletTransparent"].loadFromFile("Images/BulletTransparent.png");
 	textures["Heal"].loadFromFile("Images/Heal.png");
 	textures["MaxHealthUp"].loadFromFile("Images/MaxHealthUp.png");
 	textures["IncreaseDamage"].loadFromFile("Images/IncreaseDamage.png");
 	textures["IncreaseScore"].loadFromFile("Images/IncreaseScore.png");
+	textures["SpawnSoldier"].loadFromFile("Images/SpawnSoldier.png");
 
 	buffers["PlayerAttack"].loadFromFile("Sounds/AK.wav");
 	buffers["Bonus"].loadFromFile("Sounds/Bonus.wav");
@@ -31,9 +34,7 @@ void World::loadWorld()
 
 	player = new Player(200, 300, &textures["Player"]);
 	
-	enemies.push_back(new Zombie(500, 0, &textures["Zombie"], player));
-	enemies.push_back(new Zombie(0, 0, &textures["Zombie"], player));
-	enemySpawnSystem = new SpawnSystem<Bot>(500, 20, worldRect, &textures, &enemies, &blockEntities, player);
+	enemySpawnSystem = new SpawnSystem<Bot>(500, 20, worldRect, &textures, &bots, &blockEntities, player);
 	bonusEntitySpawnSystem = new SpawnSystem<BonusEntity>(50, 1000, worldRect, &textures, &bonusEntities, &blockEntities, player);
 
 	std::ifstream ifs("Config/blockEntities.txt");
@@ -57,7 +58,7 @@ void World::loadWorld()
 void World::unLoadWorld()
 {
 	delete player;
-	for (auto* i : enemies)
+	for (auto* i : bots)
 		delete i;
 	for (auto* i : bullets)
 		delete i;
@@ -69,7 +70,7 @@ void World::unLoadWorld()
 	delete bonusEntitySpawnSystem;
 	delete pictureMap;
 	
-	enemies.clear();
+	bots.clear();
 	bullets.clear();
 	blockEntities.clear();
 	bonusEntities.clear();
@@ -132,43 +133,20 @@ void World::updateCombat()
 		playSound(&buffers["PlayerAttack"], player->getRectPosition(), player->getBattlePoint(), 1000, 1);
 	}
 
-	for (auto* i : enemies)
+	for (auto* i : bots)
 		if (i->attacked())
 		{
 			i->resetAttack();
-			bullets.push_back(new Bullet(i, &textures["BulletTransparent"]));
-		}
-}
-
-void World::updateBotCollision(float etime)
-{
-	for (auto* i : blockEntities)
-	{
-		i->updateCollision(player, etime);
-		for (auto* j : enemies)
-			i->updateCollision(j, etime);
-	}
-}
-
-void World::updateBulletsCrashes()
-{
-	for (auto* i : bullets)
-	{
-		if (i->isAlive() && i->getRect().intersects(player->getRect()) && (i->getOwnerType() == typeid(Zombie).name()))
-		{
-			i->crashTo(player);
-			playSound(&buffers["Kick"], player->getRectPosition(), player->getRectPosition(), 500, 1);
-		}
-		for (auto* j : enemies)
-			if (i->isAlive() && i->getRect().intersects(j->getRect()) && (i->getOwnerType() == typeid(Player).name()))
+			if (typeid(*i) == typeid(Zombie))
 			{
-				i->crashTo(j);
-				playSound(&buffers["BulletDamage"], player->getRectPosition(), player->getRectPosition(), 500, 1);
+				bullets.push_back(new Bullet(i, &textures["BulletTransparent"]));
 			}
-		for (auto* j : blockEntities)
-			if (i->getRect().intersects(j->getRect()))
-				i->crash();
-	}
+			if (typeid(*i) == typeid(Terrorist) || typeid(*i) == typeid(Soldier))
+			{
+				bullets.push_back(new Bullet(i, &textures["Bullet"]));
+				playSound(&buffers["PlayerAttack"], player->getRectPosition(), i->getBattlePoint(), 1000, 1);
+			}
+		}
 }
 
 World::~World()
@@ -185,10 +163,8 @@ void World::update(float etime, sf::Vector2f mousePosView)
 	enemySpawnSystem->update();
 	bonusEntitySpawnSystem->update();
 
-	for (auto* i : enemies)
+	for (auto* i : bots)
 		i->update(etime);
-
-	//updateBotCollision(etime);
 
 	for (auto* i : blockEntities)
 		i->update(etime);
@@ -198,8 +174,6 @@ void World::update(float etime, sf::Vector2f mousePosView)
 	for (auto* i : bullets)
 		i->update(etime);
 
-	//updateBulletsCrashes();
-
 	for (auto* i : bonusEntities)
 		if (i->getRect().intersects(player->getRect()))
 		{
@@ -207,13 +181,20 @@ void World::update(float etime, sf::Vector2f mousePosView)
 			playSound(&buffers["Bonus"], player->getRectPosition(), player->getRectPosition(), 1000, 1);
 		}
 
-	for (int i = 0; i < enemies.size(); i++)
-		if (!enemies[i]->isAlive())
-		{
-			delete enemies[i];
-			enemies.erase(enemies.begin() + i);
-			player->gainScore(100);
-			playSound(&buffers["MonsterDead"], player->getRectPosition(), player->getRectPosition(), 1000, 1);
+	for (int i = 0; i < bots.size(); i++)
+		if (!bots[i]->isAlive())
+		{	
+			if (typeid(*bots[i]) == typeid(Zombie))
+			{
+				player->gainScore(100);
+				playSound(&buffers["MonsterDead"], player->getRectPosition(), player->getRectPosition(), 1000, 1);
+			}
+			if (typeid(*bots[i]) == typeid(Terrorist))
+			{
+				player->gainScore(200);
+			}
+			delete bots[i];
+			bots.erase(bots.begin() + i);
 		}
 	
 	for (int i = 0; i < bullets.size(); i++)
@@ -261,7 +242,7 @@ void World::draw(sf::RenderWindow* window)
 
 	player->draw(window);
 
-	for (auto* i : enemies)
+	for (auto* i : bots)
 		i->draw(window);
 
 	for (auto* i : bullets)

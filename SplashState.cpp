@@ -28,12 +28,15 @@ void SplashState::update(float etime)
 	const int SPLASH_DURATION = 1000;
 
 	alpha = 255 * (1 - time / SPLASH_DURATION);
-
+	
 	if (alpha < 0)
 		alpha = 0;
-
+	
 	if (time > duration - SPLASH_DURATION)
 		alpha = 255 * ((time - (duration - SPLASH_DURATION)) / SPLASH_DURATION - 1);
+
+	if (alpha > 255)
+		alpha = 255;
 
 	rect.setFillColor(sf::Color(0, 0, 0, alpha));
 

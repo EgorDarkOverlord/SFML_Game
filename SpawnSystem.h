@@ -2,6 +2,7 @@
 #include "BlockEntity.h"
 #include "BonusEntity.h"
 #include "Zombie.h"
+#include "Terrorist.h"
 #include "Player.h"
 
 template <class T>
@@ -76,7 +77,13 @@ void SpawnSystem<T>::update()
 template<>
 inline void SpawnSystem<Bot>::addSpawnObject()
 {
-	Bot* bot = new Zombie(0, 0, &textures->at("Zombie"), player);
+	Bot* bot;
+	
+	if (rand() % 20 == 0)
+		bot = new Terrorist(0, 0, &textures->at("Terrorist"));
+	else
+		bot = new Zombie(0, 0, &textures->at("Zombie"));
+
 	bot->setHealthMax(bot->getHealthMax() * (1 + player->getLevel() / 10.f));
 	bot->setDamage(bot->getDamage() * (1 + player->getLevel() / 10.f));
 
@@ -90,7 +97,7 @@ inline void SpawnSystem<Bot>::addSpawnObject()
 template<>
 inline void SpawnSystem<BonusEntity>::addSpawnObject()
 {
-	const int TYPE_COUNT = 4;
+	const int TYPE_COUNT = 5;
 	BonusEntity* bonusEntity = NULL;
 	int type = rand() % TYPE_COUNT;
 	switch (type)
@@ -99,6 +106,7 @@ inline void SpawnSystem<BonusEntity>::addSpawnObject()
 	case 1: bonusEntity = new BonusEntity(0, 0, &textures->at("MaxHealthUp"), BonusEntity::MaxHealthUp); break;
 	case 2: bonusEntity = new BonusEntity(0, 0, &textures->at("IncreaseDamage"), BonusEntity::IncreaseDamage); break;
 	case 3: bonusEntity = new BonusEntity(0, 0, &textures->at("IncreaseScore"), BonusEntity::IncreaseScore); break;
+	case 4: bonusEntity = new BonusEntity(0, 0, &textures->at("SpawnSoldier"), BonusEntity::SpawnSoldier); break;
 	}
 
 	bonusEntity->setPosition(rand() % int(worldRect.width - bonusEntity->getRect().width), rand() % int(worldRect.height - bonusEntity->getRect().height));

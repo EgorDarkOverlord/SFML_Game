@@ -35,6 +35,6 @@ void BlockEntity::updateCollision(Entity* entity, float etime)
 void BlockEntity::update(float etime)
 {
     updateCollision(worldFacade->getPlayer(), etime);
-    for (auto* i : worldFacade->getEnemies())
+    for (auto* i : worldFacade->getBots())
         updateCollision(i, etime);
 }

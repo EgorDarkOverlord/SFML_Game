@@ -16,5 +16,6 @@ public:
 	static void MaxHealthUp(Bot* bot);
 	static void IncreaseDamage(Bot* bot);
 	static void IncreaseScore(Bot* bot);
+	static void SpawnSoldier(Bot* bot);
 };
 

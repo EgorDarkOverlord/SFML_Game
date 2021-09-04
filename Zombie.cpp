@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "Zombie.h"
 
-Zombie::Zombie(float x, float y, sf::Texture* texture, Entity* player) : Bot(x, y, texture)
+Zombie::Zombie(float x, float y, sf::Texture* texture) : Bot(x, y, texture)
 {
 	rect.setSize(sf::Vector2f(100, 60));
 	rect.setOrigin(50, 30);

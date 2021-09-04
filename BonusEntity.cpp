@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "BonusEntity.h"
+#include "WorldFacade.h"
 
 BonusEntity::BonusEntity(float x, float y, sf::Texture* texture, std::function<void(Bot*)> func) : func(func)
 {
@@ -37,4 +38,21 @@ void BonusEntity::IncreaseDamage(Bot* bot)
 void BonusEntity::IncreaseScore(Bot* bot)
 {
     bot->gainScore(1000);
+}
+
+void BonusEntity::SpawnSoldier(Bot* bot)
+{
+    if (std::count_if(worldFacade->getBots().begin(), worldFacade->getBots().end(),
+        [](Bot* i) {return typeid(*i) == typeid(Soldier); }) < 5)
+    {
+        worldFacade->getBots().push_back(
+            new Soldier(bot->getRectPosition().x, bot->getRectPosition().y, &worldFacade->getTextures()["Soldier"])
+        );
+    }
+    else
+    {
+        for (auto* i : worldFacade->getBots())
+            if (typeid(*i) == typeid(Soldier))
+                i->gainHealth(100);
+    }
 }

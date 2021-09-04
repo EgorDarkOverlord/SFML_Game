@@ -2,6 +2,8 @@
 #include "BlockEntity.h"
 #include "Player.h"
 #include "Zombie.h"
+#include "Soldier.h"
+#include "Terrorist.h"
 #include "Bullet.h"
 #include "SpawnSystem.h"
 #include "PictureMap.h"
@@ -13,7 +15,7 @@ private:
 	Player* player;
 	std::vector<BlockEntity*> blockEntities;
 	std::vector<BonusEntity*> bonusEntities;
-	std::vector<Bot*> enemies;
+	std::vector<Bot*> bots;
 	std::vector<Bullet*> bullets;
 	
 	SpawnSystem<Bot>* enemySpawnSystem;
@@ -28,8 +30,6 @@ private:
 	void updatePlayerInput(sf::Vector2f mousePosView);
 	void playSound(sf::SoundBuffer* buffer, sf::Vector2f listenerPos, sf::Vector2f sourcePos, float minDistance, float attenuation);
 	void updateCombat();
-	void updateBotCollision(float etime);
-	void updateBulletsCrashes();
 public:
 	World();
 	~World();
